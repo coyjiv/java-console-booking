@@ -1,4 +1,4 @@
-package daos;
+package daos.Flights;
 
 public class FlightsDao {
 }
