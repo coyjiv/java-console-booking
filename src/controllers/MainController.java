@@ -1,10 +1,7 @@
 package controllers;
 
-import daos.Booking.BookingDao;
-import daos.Booking.SetBookingDao;
-import services.Booking.BookingService;
-import services.Booking.DefaultBookingService;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class MainController {
@@ -16,17 +13,17 @@ public class MainController {
         this.bookingsController = bookingController;
     }
 
-    public static void run() {
-        BookingDao bookingDao = new SetBookingDao();
-        BookingService bookingService = new DefaultBookingService(bookingDao);
-        BookingsController bookingsController = new BookingsController(bookingService);
-        FlightsController flightsController = new FlightsController();
-        MainController main = new MainController(flightsController, bookingsController);
+    public void run() {
 
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.println(displayMenu());
+            if (!scanner.hasNextInt()) {
+                System.err.println("Ви ввели не число, будь ласка, введіть число.");
+                scanner.nextLine();
+                continue;
+            }
             int choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -55,7 +52,7 @@ public class MainController {
         }
     }
 
-    private static String displayMenu() {
+    private String displayMenu() {
         return "             Головне меню:\n" +
                 " _______________________________________\n" +
                 "  Оберіть дію: \n" +
@@ -68,34 +65,45 @@ public class MainController {
                 "_______________________________________\n";
     }
 
-    private static void showFlightBoard() {
+    private void showFlightBoard() {
         //TODO: Виклик методу контролера рейсу
     }
 
-    private static void showFlightDetails(Scanner scanner) {
+    private void showFlightDetails(Scanner scanner) {
         System.out.print("Введіть айді рейсу: ");
         String flightId = scanner.nextLine();
         //TODO: Виклик методу контролера рейсу
     }
 
-    private static void searchAndBookFlight(Scanner scanner) {
+    private void searchAndBookFlight(Scanner scanner) {
         System.out.print("Введіть місце призначення: ");
         String destination = scanner.nextLine();
-        System.out.print("Введіть дату: ");
-        String date = scanner.nextLine();
+
+        System.out.print("Введіть дату (у форматі рік-місяць-день, наприклад, 2023-08-04): ");
+        String dateInput = scanner.nextLine();
+        LocalDate date = null;
+
+        try {
+            date = LocalDate.parse(dateInput);
+        } catch (DateTimeParseException e) {
+            System.err.println("Помилка: Неправильний формат дати.");
+            return;
+        }
+
         System.out.print("Введіть кількість осіб: ");
         int numPassengers = scanner.nextInt();
         scanner.nextLine();
+
         //TODO: Виклик методу контролера (пошук бронювання рейсу)
     }
 
-    private static void cancelBooking(Scanner scanner) {
+    private void cancelBooking(Scanner scanner) {
         System.out.print("Введіть айді бронювання: ");
         String bookingId = scanner.nextLine();
         //TODO: Виклик методу контролера бронювання
     }
 
-    private static void showMyBookings(Scanner scanner) {
+    private void showMyBookings(Scanner scanner) {
         System.out.print("Введіть прізвище та ім'я: ");
         String passengerName = scanner.nextLine();
         //TODO: Виклик методу контролера бронювання
