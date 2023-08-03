@@ -15,6 +15,7 @@ public class MainController {
 
     public void run() {
 
+        int choice;
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -23,7 +24,7 @@ public class MainController {
                 System.err.println("Ви ввели не число, будь ласка, введіть число.");
                 continue;
             }
-            int choice = scanner.nextInt();
+            choice = scanner.nextInt();
             scanner.nextLine();
 
             switch (choice) {
@@ -78,7 +79,12 @@ public class MainController {
 
     private void showFlightDetails(Scanner scanner) {
         System.out.print("Введіть айді рейсу: ");
-        String flightId = scanner.nextLine();
+
+        if (!isIntEntered(scanner)) {
+            System.err.println("Ви ввели не число, будь ласка, наступного разу введіть число.");
+            return;
+        }
+        int flightId = scanner.nextInt();
         //TODO: Виклик методу контролера рейсу
     }
 
@@ -98,6 +104,9 @@ public class MainController {
         }
 
         System.out.print("Введіть кількість осіб: ");
+        if (!isIntEntered(scanner)){
+            System.err.println("Ви ввели не число, будь ласка, наступного разу введіть число.");
+        }
         int numPassengers = scanner.nextInt();
         scanner.nextLine();
 
@@ -107,7 +116,7 @@ public class MainController {
     private void cancelBooking(Scanner scanner) {
         System.out.print("Введіть айді бронювання: ");
           if (!isIntEntered(scanner)) {
-              System.err.println("Ви ввели не число, будь ласка, введіть число.");
+              System.err.println("Ви ввели не число, будь ласка, наступного разу введіть число.");
               return;
         }
         int bookingId = scanner.nextInt();
