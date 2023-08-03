@@ -99,7 +99,7 @@ public class MainController {
 
     private void cancelBooking(Scanner scanner) {
         System.out.print("Введіть айді бронювання: ");
-        String bookingId = scanner.nextLine();
+        int bookingId = scanner.nextInt();
         //TODO: Виклик методу контролера бронювання
     }
 
