@@ -6,9 +6,6 @@ public class Booking {
     private String passenger;
     private String seat;
 
-    public Booking() {
-    }
-
     // Need to write logic for auto set ID
     public Booking(int ID, Flight flight, String passenger, String seat) {
         this.ID = ID;

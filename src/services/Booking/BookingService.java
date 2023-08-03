@@ -9,6 +9,6 @@ public interface BookingService {
     Set<Booking> getAll();
     Booking getBookingById(int ID);
     Set<Booking> getAllPassengerBooks(String passenger);
-    void book(Booking book);
+    void create(Booking book);
     void cancel(Booking book);
 }

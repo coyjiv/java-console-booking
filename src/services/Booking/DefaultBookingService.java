@@ -25,7 +25,7 @@ public class DefaultBookingService implements BookingService{
         if (book.isPresent()){
             return (Booking) book.get();
         } else {
-            throw new NoSuchElementException("Бронювання за таким номером не існує !");
+            throw new NoSuchElementException("Бронювання за таким ID не існує !");
         }
     }
 
@@ -43,8 +43,8 @@ public class DefaultBookingService implements BookingService{
     }
 
     @Override
-    public void book(Booking book) {
-        bookingDao.book(book);
+    public void create(Booking book) {
+        bookingDao.create(book);
     }
 
     @Override
