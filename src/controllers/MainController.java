@@ -19,9 +19,8 @@ public class MainController {
 
         while (true) {
             System.out.println(displayMenu());
-            if (!scanner.hasNextInt()) {
+            if (!isIntEntered(scanner)) {
                 System.err.println("Ви ввели не число, будь ласка, введіть число.");
-                scanner.nextLine();
                 continue;
             }
             int choice = scanner.nextInt();
@@ -50,6 +49,14 @@ public class MainController {
                     System.err.println("Невідома команда, будь ласка, спробуйте ще раз.");
             }
         }
+    }
+
+    private boolean isIntEntered(Scanner scanner) {
+        if (!scanner.hasNextInt()) {
+            scanner.nextLine();
+            return false;
+        }
+        return true;
     }
 
     private String displayMenu() {
@@ -99,6 +106,10 @@ public class MainController {
 
     private void cancelBooking(Scanner scanner) {
         System.out.print("Введіть айді бронювання: ");
+          if (!isIntEntered(scanner)) {
+              System.err.println("Ви ввели не число, будь ласка, введіть число.");
+              return;
+        }
         int bookingId = scanner.nextInt();
         //TODO: Виклик методу контролера бронювання
     }
