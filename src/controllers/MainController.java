@@ -20,11 +20,15 @@ public class MainController {
 
         while (true) {
             System.out.println(displayMenu());
-            if (!isIntEntered(scanner)) {
+
+            if (!scanner.hasNextInt()) {
                 System.err.println("Ви ввели не число, будь ласка, введіть число.");
+                scanner.nextLine();
                 continue;
             }
+
             choice = scanner.nextInt();
+
             scanner.nextLine();
 
             switch (choice) {
@@ -52,14 +56,6 @@ public class MainController {
         }
     }
 
-    private boolean isIntEntered(Scanner scanner) {
-        if (!scanner.hasNextInt()) {
-            scanner.nextLine();
-            return false;
-        }
-        return true;
-    }
-
     private String displayMenu() {
         return "             Головне меню:\n" +
                 " _______________________________________\n" +
@@ -80,8 +76,9 @@ public class MainController {
     private void showFlightDetails(Scanner scanner) {
         System.out.print("Введіть айді рейсу: ");
 
-        if (!isIntEntered(scanner)) {
-            System.err.println("Ви ввели не число, будь ласка, наступного разу введіть число.");
+        if (!scanner.hasNextInt()) {
+            System.err.println("Ви ввели не число, будь ласка, введіть число.");
+            scanner.nextLine();
             return;
         }
         int flightId = scanner.nextInt();
@@ -104,8 +101,10 @@ public class MainController {
         }
 
         System.out.print("Введіть кількість осіб: ");
-        if (!isIntEntered(scanner)){
-            System.err.println("Ви ввели не число, будь ласка, наступного разу введіть число.");
+        if (!scanner.hasNextInt()) {
+            System.err.println("Ви ввели не число, будь ласка, введіть число.");
+            scanner.nextLine();
+            return;
         }
         int numPassengers = scanner.nextInt();
         scanner.nextLine();
@@ -115,9 +114,10 @@ public class MainController {
 
     private void cancelBooking(Scanner scanner) {
         System.out.print("Введіть айді бронювання: ");
-          if (!isIntEntered(scanner)) {
-              System.err.println("Ви ввели не число, будь ласка, наступного разу введіть число.");
-              return;
+        if (!scanner.hasNextInt()) {
+            System.err.println("Ви ввели не число, будь ласка, введіть число.");
+            scanner.nextLine();
+            return;
         }
         int bookingId = scanner.nextInt();
         //TODO: Виклик методу контролера бронювання
