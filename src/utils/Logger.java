@@ -73,7 +73,7 @@ public class Logger {
     }
 
     public static void notCorrectInput(String message) {
-        LOGGER.warning("Помилка: " + message);
+        LOGGER.warning(message);
     }
 
     public static void correctInput(String message) {
