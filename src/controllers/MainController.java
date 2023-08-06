@@ -2,7 +2,6 @@ package controllers;
 
 import utils.ConsoleColors;
 import utils.Logger;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -18,6 +17,7 @@ public class MainController implements ConsoleColors {
     }
 
     public void run() {
+
         int choice;
 
         Scanner scanner = new Scanner(System.in);
@@ -27,6 +27,7 @@ public class MainController implements ConsoleColors {
 
             if (!scanner.hasNextInt()) {
                 Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Ви ввели не число, будь ласка, введіть число. " + RESET);
+              
                 scanner.nextLine();
                 continue;
             }
@@ -62,6 +63,7 @@ public class MainController implements ConsoleColors {
         }
     }
 
+
     private void displayMenu() {
         Logger.displayMenuLog();
         System.out.println(BLUE + """
@@ -83,6 +85,7 @@ public class MainController implements ConsoleColors {
     }
 
     private void showFlightDetails(Scanner scanner) {
+
         Logger.systemMessage(CYAN_BOLD + "Введіть айді рейсу: " + RESET);
 
         if (!scanner.hasNextInt()) {
@@ -96,6 +99,7 @@ public class MainController implements ConsoleColors {
     }
 
     private void searchAndBookFlight(Scanner scanner) {
+
         Logger.systemMessage(CYAN_BOLD + "Введіть місце призначення: " + RESET);
         String destination = scanner.nextLine();
         logger.correctInput(destination);
@@ -103,11 +107,13 @@ public class MainController implements ConsoleColors {
         Logger.systemMessage(CYAN_BOLD + "Введіть дату (у форматі рік-місяць-день, наприклад, 2023-08-04): " + RESET);
         String dateInput = scanner.nextLine();
         logger.correctInput(dateInput);
+      
         LocalDate date = null;
 
         try {
             date = LocalDate.parse(dateInput);
         } catch (DateTimeParseException e) {
+
             Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Неправильний формат дати. " + RESET);
             return;
         }
@@ -115,32 +121,41 @@ public class MainController implements ConsoleColors {
         Logger.systemMessage(CYAN_BOLD + "Введіть кількість осіб: " + RESET);
         if (!scanner.hasNextInt()) {
             Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Ви ввели не число, будь ласка, введіть число. " + RESET);
+
             scanner.nextLine();
             return;
         }
         int numPassengers = scanner.nextInt();
+
         logger.correctInput(Integer.toString(numPassengers));
+
         scanner.nextLine();
 
         //TODO: Виклик методу контролера (пошук бронювання рейсу)
     }
 
     private void cancelBooking(Scanner scanner) {
+
         Logger.systemMessage(CYAN_BOLD + "Введіть айді бронювання: " + RESET);
         if (!scanner.hasNextInt()) {
             Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Ви ввели не число, будь ласка, введіть число. " + RESET);
+
             scanner.nextLine();
             return;
         }
         int bookingId = scanner.nextInt();
+
         logger.correctInput(Integer.toString(bookingId));
+
         //TODO: Виклик методу контролера бронювання
     }
 
     private void showMyBookings(Scanner scanner) {
+      
         Logger.systemMessage(CYAN_BOLD + "Введіть прізвище та ім'я: " + RESET);
         String passengerName = scanner.nextLine();
         logger.correctInput(passengerName);
+
         //TODO: Виклик методу контролера бронювання
     }
 }
