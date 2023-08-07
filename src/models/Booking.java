@@ -45,4 +45,22 @@ public class Booking {
     public void setSeat(String seat) {
         this.seat = seat;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Booking booking = (Booking) o;
+
+        return getID() == booking.getID();
+    }
+    @Override
+    public int hashCode() {
+        int result = getID();
+        result = 31 * result + getFlight().hashCode();
+        result = 31 * result + getPassenger().hashCode();
+        result = 31 * result + getSeat().hashCode();
+        return result;
+    }
 }
