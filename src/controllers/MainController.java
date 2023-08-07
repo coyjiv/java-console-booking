@@ -1,12 +1,15 @@
 package controllers;
 
+import utils.ConsoleColors;
+import utils.Logger;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-public class MainController {
+public class MainController implements ConsoleColors {
     private final FlightsController flightsController;
     private final BookingsController bookingsController;
+    private Logger logger;
 
     public MainController(FlightsController flightController, BookingsController bookingController) {
         this.flightsController = flightController;
@@ -16,18 +19,22 @@ public class MainController {
     public void run() {
 
         int choice;
+
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println(displayMenu());
+            displayMenu();
 
             if (!scanner.hasNextInt()) {
-                System.err.println("Ви ввели не число, будь ласка, введіть число.");
+                Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Ви ввели не число, будь ласка, введіть число. " + RESET);
+              
                 scanner.nextLine();
                 continue;
             }
 
             choice = scanner.nextInt();
+
+            logger.correctInput(Integer.toString(choice));
 
             scanner.nextLine();
 
@@ -48,25 +55,29 @@ public class MainController {
                     showMyBookings(scanner);
                     break;
                 case 0:
-                    System.out.println("До побачення!");
+                    Logger.systemMessage(YELLOW_BOLD + "До побачення!" + RESET);
                     return;
                 default:
-                    System.err.println("Невідома команда, будь ласка, спробуйте ще раз.");
+                    Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Невідома команда, будь ласка, спробуйте ще раз. " + RESET);
             }
         }
     }
 
-    private String displayMenu() {
-        return "             Головне меню:\n" +
-                " _______________________________________\n" +
-                "  Оберіть дію: \n" +
-                " 1. Онайн-табло\n" +
-                " 2. Подивитися інформацію про рейс\n" +
-                " 3. Пошук та бронювання рейсу\n" +
-                " 4. Скасувати бронювання\n" +
-                " 5. Мої рейси\n" +
-                " 0. Вихід\n" +
-                "_______________________________________\n";
+
+    private void displayMenu() {
+        Logger.displayMenuLog();
+        System.out.println(BLUE + """
+                                            Головне меню
+                               ______________________________________
+                                 Оберіть дію:
+                                    1. Онайн-табло
+                                    2. Подивитися інформацію про рейс
+                                    3. Пошук та бронювання рейсу
+                                    4. Скасувати бронювання
+                                    5. Мої рейси
+                                    0. Вихід
+                                ______________________________________
+                """ + RESET);
     }
 
     private void showFlightBoard() {
@@ -74,58 +85,77 @@ public class MainController {
     }
 
     private void showFlightDetails(Scanner scanner) {
-        System.out.print("Введіть айді рейсу: ");
+
+        Logger.systemMessage(CYAN_BOLD + "Введіть айді рейсу: " + RESET);
 
         if (!scanner.hasNextInt()) {
-            System.err.println("Ви ввели не число, будь ласка, введіть число.");
+            Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Ви ввели не число, будь ласка, введіть число. " + RESET);
             scanner.nextLine();
             return;
         }
         int flightId = scanner.nextInt();
+        logger.correctInput(Integer.toString(flightId));
         //TODO: Виклик методу контролера рейсу
     }
 
     private void searchAndBookFlight(Scanner scanner) {
-        System.out.print("Введіть місце призначення: ");
-        String destination = scanner.nextLine();
 
-        System.out.print("Введіть дату (у форматі рік-місяць-день, наприклад, 2023-08-04): ");
+        Logger.systemMessage(CYAN_BOLD + "Введіть місце призначення: " + RESET);
+        String destination = scanner.nextLine();
+        logger.correctInput(destination);
+
+        Logger.systemMessage(CYAN_BOLD + "Введіть дату (у форматі рік-місяць-день, наприклад, 2023-08-04): " + RESET);
         String dateInput = scanner.nextLine();
+        logger.correctInput(dateInput);
+      
         LocalDate date = null;
 
         try {
             date = LocalDate.parse(dateInput);
         } catch (DateTimeParseException e) {
-            System.err.println("Помилка: Неправильний формат дати.");
+
+            Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Неправильний формат дати. " + RESET);
             return;
         }
 
-        System.out.print("Введіть кількість осіб: ");
+        Logger.systemMessage(CYAN_BOLD + "Введіть кількість осіб: " + RESET);
         if (!scanner.hasNextInt()) {
-            System.err.println("Ви ввели не число, будь ласка, введіть число.");
+            Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Ви ввели не число, будь ласка, введіть число. " + RESET);
+
             scanner.nextLine();
             return;
         }
         int numPassengers = scanner.nextInt();
+
+        logger.correctInput(Integer.toString(numPassengers));
+
         scanner.nextLine();
 
         //TODO: Виклик методу контролера (пошук бронювання рейсу)
     }
 
     private void cancelBooking(Scanner scanner) {
-        System.out.print("Введіть айді бронювання: ");
+
+        Logger.systemMessage(CYAN_BOLD + "Введіть айді бронювання: " + RESET);
         if (!scanner.hasNextInt()) {
-            System.err.println("Ви ввели не число, будь ласка, введіть число.");
+            Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Ви ввели не число, будь ласка, введіть число. " + RESET);
+
             scanner.nextLine();
             return;
         }
         int bookingId = scanner.nextInt();
+
+        logger.correctInput(Integer.toString(bookingId));
+
         //TODO: Виклик методу контролера бронювання
     }
 
     private void showMyBookings(Scanner scanner) {
-        System.out.print("Введіть прізвище та ім'я: ");
+      
+        Logger.systemMessage(CYAN_BOLD + "Введіть прізвище та ім'я: " + RESET);
         String passengerName = scanner.nextLine();
+        logger.correctInput(passengerName);
+
         //TODO: Виклик методу контролера бронювання
     }
 }
