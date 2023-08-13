@@ -10,12 +10,24 @@ public class SetBookingDao implements BookingDao{
     public Set<Booking> getAll() {
         return this.bookings;
     }
+
+    @Override
+    public Booking getBookingById(int ID) throws NoSuchElementException {
+        Optional<Booking> book = getAll().stream().filter(booking -> booking.getID() == ID).findFirst();
+
+        if (book.isPresent()){
+            return (Booking) book.get();
+        } else {
+            throw new NoSuchElementException("Бронювання за таким ID не існує !");
+        }
+    }
+
     @Override
     public void create(Booking book) {
         bookings.add(book);
     }
     @Override
-    public void cancel(Booking book) {
-        bookings.remove(book);
+    public void cancel(int ID) {
+        this.bookings.remove(getBookingById(ID));
     }
 }

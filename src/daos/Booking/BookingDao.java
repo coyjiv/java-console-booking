@@ -7,6 +7,7 @@ import java.util.Set;
 
 public interface BookingDao {
     Set<Booking> getAll();
+    Booking getBookingById(int ID);
     void create(Booking book);
-    void cancel(Booking book);
+    void cancel(int ID);
 }
