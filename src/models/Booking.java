@@ -1,12 +1,14 @@
 package models;
 
-public class Booking {
+import java.io.Serializable;
+import java.time.format.DateTimeFormatter;
+
+public class Booking implements Serializable {
     private int ID;
     private Flight flight;
     private String passenger;
     private String seat;
 
-    // Need to write logic for auto set ID
     public Booking(int ID, Flight flight, String passenger, String seat) {
         this.ID = ID;
         this.flight = flight;
@@ -62,5 +64,15 @@ public class Booking {
         result = 31 * result + getPassenger().hashCode();
         result = 31 * result + getSeat().hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("| id: %d | Passenger: %s | Departure Date:  %-20s | Arrival date : %-20s | Route: %-50s |",
+                getID(),
+                getPassenger(),
+                flight.getDepartureDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
+                flight.getArrivalDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
+                String.join(" -> ", flight.getRoute()));
     }
 }

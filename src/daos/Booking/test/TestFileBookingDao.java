@@ -1,25 +1,29 @@
 package daos.Booking.test;
 
 import daos.Booking.BookingDao;
-import daos.Booking.SetBookingDao;
-import daos.Flights.FlightsDao;
+import daos.Booking.FileBookingDao;
 import models.Booking;
 import models.Flight;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class TestSetBookingDao {
+public class TestFileBookingDao {
     private BookingDao bookingDao;
     @BeforeEach
     public void beforeEach(){
-        bookingDao = new SetBookingDao();
+        bookingDao = new FileBookingDao();
+        File file = new File("bookings.ser");
+        if(file.exists()){
+            file.delete();
+        }
     }
 
     @Test
@@ -39,7 +43,7 @@ public class TestSetBookingDao {
     }
 
     @Test
-    public void testCancelBooking(){
+    public void testCancelBookingByID(){
         Flight flight = new Flight(
                 "1",
                 LocalDateTime.of(2023, Month.AUGUST, 11, 14,55),
@@ -52,6 +56,22 @@ public class TestSetBookingDao {
         bookingDao.create(booking);
         assertEquals(1, bookingDao.getAll().size());
         bookingDao.cancel(1);
+        assertEquals(0, bookingDao.getAll().size());
+    }
+    @Test
+    public void testCancelBookingByObj(){
+        Flight flight = new Flight(
+                "1",
+                LocalDateTime.of(2023, Month.AUGUST, 11, 14,55),
+                LocalDateTime.of(2023, Month.AUGUST, 12, 4,25),
+                new ArrayList<>(List.of("Buharest")),
+                55
+        );
+        Booking booking = new Booking(1, flight, "Kirilenko Andriy", "47");
+
+        bookingDao.create(booking);
+        assertEquals(1, bookingDao.getAll().size());
+        bookingDao.cancel(booking);
         assertEquals(0, bookingDao.getAll().size());
     }
 

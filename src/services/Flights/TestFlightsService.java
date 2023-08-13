@@ -99,7 +99,7 @@ public class TestFlightsService {
         LocalDateTime searchDepartureDate = fixedNow.plusDays(3);
         LocalDateTime searchArrivalDate = fixedNow.plusDays(3).plusHours(12);
 
-        Set<Flight> results = flightsService.getRelevantFlights("Paris", "Berlin", searchDepartureDate, searchArrivalDate, 1);
+        List<Flight> results = flightsService.getRelevantFlights("Paris", "Berlin", searchDepartureDate, searchArrivalDate, 1);
 
         assertTrue(results.contains(relevantFlight));
         assertEquals(1, results.size());

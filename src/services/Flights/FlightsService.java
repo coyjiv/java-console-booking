@@ -4,6 +4,7 @@ import models.Flight;
 
 import java.time.LocalDateTime;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public class FlightsService implements IFlightsService{
     }
 
     @Override
-    public Set<Flight> getRelevantFlights(String startLocation, String endLocation, LocalDateTime departureDate, LocalDateTime arrivalDate, int ticketCount) {
+    public List<Flight> getRelevantFlights(String startLocation, String endLocation, LocalDateTime departureDate, LocalDateTime arrivalDate, int ticketCount) {
         return dao.getAll().stream()
                 .filter(f -> f.getDepartureCity().trim().equalsIgnoreCase(startLocation.trim())
                         && f.getRoute().stream().map(String::trim).anyMatch(city -> city.equalsIgnoreCase(endLocation.trim())))
@@ -43,8 +44,9 @@ public class FlightsService implements IFlightsService{
                             && (arrivalDate == null || !f.getArrivalDate().isAfter(arrivalDate.plusDays(1).minusSeconds(1)));
                 })
                 .filter(f -> f.getTicketCount() >= ticketCount)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
+
     @Override
     public void generateRandomFlights(int quantity) {
         dao.generateRandomFlights(quantity);

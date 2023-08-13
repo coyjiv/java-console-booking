@@ -41,7 +41,12 @@ public class DefaultBookingService implements BookingService{
     }
 
     @Override
-    public void cancel(int ID) {
-        bookingDao.cancel(ID);
+    public boolean cancel(int ID) {
+        return this.bookingDao.cancel(ID);
+    }
+
+    @Override
+    public boolean cancel(Booking booking) {
+        return this.bookingDao.cancel(booking);
     }
 }

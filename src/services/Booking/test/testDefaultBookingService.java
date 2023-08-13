@@ -1,7 +1,7 @@
 package services.Booking.test;
 
 import daos.Booking.BookingDao;
-import daos.Booking.SetBookingDao;
+import daos.Booking.FileBookingDao;
 import models.Booking;
 import models.Flight;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ public class testDefaultBookingService {
     BookingService bookingService;
     @BeforeEach
     public void beforeEach(){
-        bookingDao = new SetBookingDao();
+        bookingDao = new FileBookingDao();
         bookingService = new DefaultBookingService(bookingDao);
     }
 
