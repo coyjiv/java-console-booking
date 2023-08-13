@@ -11,6 +11,7 @@ public class Flight implements Serializable {
     private LocalDateTime arrivalDate;
     private ArrayList<String> route;
     private int totalSeats;
+    private int ticketCount;
 
     public Flight(String id, LocalDateTime departureDate, LocalDateTime estimatedArrivalDate, ArrayList<String> locations, int totalSeats) {
         this.id = id;
@@ -18,6 +19,7 @@ public class Flight implements Serializable {
         this.arrivalDate = estimatedArrivalDate;
         this.route = locations;
         this.totalSeats = totalSeats;
+        this.ticketCount = totalSeats;
     }
 
     public String getId() {
@@ -64,6 +66,19 @@ public class Flight implements Serializable {
         return route.isEmpty()?null: route.get(0);
     }
 
+    public void setDepartureDate(LocalDateTime departureDate) {
+        this.departureDate = departureDate;
+    }
+
+    public int getTicketCount() {
+        return ticketCount;
+    }
+
+    public void setTicketCount(int ticketCount) {
+        this.ticketCount = ticketCount;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -81,10 +96,10 @@ public class Flight implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("| %-10s | %-20s | %-20s | %-50s |",
+        return String.format("| id: %-10s |  Date:  %-20s | Departure date : %-20s | Route: %-50s |",
                 getId(),
-                getDepartureDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                getArrivalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                getDepartureDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
+                getArrivalDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
                 String.join(" -> ", getRoute()));
     }
 
