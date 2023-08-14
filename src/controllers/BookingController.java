@@ -24,7 +24,7 @@ public class BookingController {
     }
     public void bookRelevantFlight(Flight flight, User passengerProfile){
         int ID = bookingService.getAll().size() + 1;
-        String seat = String.valueOf(flight.getTicketCount() - (flight.getTicketCount() - 1));
+        String seat = String.valueOf(flight.getTicketCount() - 1);
         Booking booking = new Booking(ID, flight, passengerProfile, seat);
         bookingService.create(booking);
         System.out.println("Ви успішно забронювали рейс. Інформація про бронювання: " + booking);
