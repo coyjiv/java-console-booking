@@ -11,13 +11,13 @@ import java.util.Scanner;
 
 public class MainController implements ConsoleColors {
     private final FlightsController flightsController;
-    private final BookingsController bookingsController;
+    private final BookingController bookingController;
     private final SessionController sessionController;
     private Logger logger;
 
-    public MainController(FlightsController flightController, BookingsController bookingController, SessionController sessionController) {
+    public MainController(FlightsController flightController, BookingController bookingController, SessionController sessionController) {
         this.flightsController = flightController;
-        this.bookingsController = bookingController;
+        this.bookingController = bookingController;
         this.sessionController = sessionController;
     }
 
@@ -55,7 +55,7 @@ public class MainController implements ConsoleColors {
 
             if (!scanner.hasNextInt()) {
                 Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Ви ввели не число, будь ласка, введіть число. " + RESET);
-
+              
                 scanner.nextLine();
                 continue;
             }
@@ -93,6 +93,7 @@ public class MainController implements ConsoleColors {
             }
         }
     }
+
 
     private void displayMenu() {
         Logger.displayMenuLog();
@@ -138,7 +139,7 @@ public class MainController implements ConsoleColors {
         Logger.systemMessage(CYAN_BOLD + "Введіть дату (у форматі рік-місяць-день, наприклад, 2023-08-04): " + RESET);
         String dateInput = scanner.nextLine();
         logger.correctInput(dateInput);
-
+      
         LocalDate date = null;
 
         try {

@@ -1,6 +1,6 @@
 import controllers.*;
 import daos.Booking.BookingDao;
-import daos.Booking.SetBookingDao;
+import daos.Booking.FileBookingDao;
 import daos.Flights.FlightsDao;
 import daos.Sessions.SessionsDao;
 import daos.Users.UsersDao;
@@ -12,13 +12,13 @@ import services.Users.UsersService;
 
 public class Main {
     public static void main(String[] args) {
-        BookingDao bookingDao = new SetBookingDao();
+        BookingDao bookingDao = new FileBookingDao();
         BookingService bookingService = new DefaultBookingService(bookingDao);
-        BookingsController bookingsController = new BookingsController(bookingService);
+        BookingController bookingController = new BookingController(bookingService);
 
         FlightsDao flightsDao = new FlightsDao();
         FlightsService flightsService = new FlightsService(flightsDao);
-        FlightsController flightsController = new FlightsController(flightsService);
+        FlightsController flightsController = new FlightsController(flightsService, bookingController);
 
         UsersDao usersDao = new UsersDao();
         UsersService usersService = new UsersService(usersDao);
@@ -28,7 +28,7 @@ public class Main {
         SessionsService sessionsService = new SessionsService(sessionsDao);
         SessionController sessionController = new SessionController(sessionsService,usersController);
 
-        MainController main = new MainController(flightsController, bookingsController,sessionController);
+        MainController main = new MainController(flightsController, bookingController,sessionController);
 
         main.run();
 

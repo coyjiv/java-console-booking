@@ -39,6 +39,4 @@ public class SessionController implements ConsoleColors {
     public void logout() {
         session.setUser(null);
     }
-
-
 }

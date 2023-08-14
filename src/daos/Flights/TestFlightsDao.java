@@ -5,7 +5,7 @@ import models.Flight;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,6 +19,10 @@ public class TestFlightsDao {
     @BeforeEach
     public void beforeEach(){
         flightsDao = new FlightsDao();
+        File file = new File("flights.ser");
+        if(file.exists()){
+            file.delete();
+        }
     }
     @Test
     public void testCreateFlight(){
@@ -56,7 +60,7 @@ public class TestFlightsDao {
     }
     @Test
     public void testGetUnexistingFlightById(){
-        Flight foundFlight = flightsDao.getFlightById("1");
+        Flight foundFlight = flightsDao.getFlightById("sdg");
         assertNull(foundFlight);
     }
     @Test
@@ -130,7 +134,7 @@ public class TestFlightsDao {
     }
     @Test
     public void testDeleteFlightByIdEqualsNull(){
-        boolean isDeleted = flightsDao.delete("1");
+        boolean isDeleted = flightsDao.delete("599904");
         assertFalse(isDeleted);
     }
 

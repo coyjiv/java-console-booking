@@ -1,8 +1,8 @@
 package daos.Flights;
-
 import models.Flight;
-
+import utils.FlightGenerator;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -28,12 +28,15 @@ public class FlightsDao implements IFlightsDao{
     @Override
     public void create(Flight flight) {
         flights.add(flight);
+        saveFlights();
     }
 
     @Override
     public boolean edit(Flight flightToEdit, Flight editedFlight) {
         if(flights.remove(flightToEdit)){
-            return flights.add(editedFlight);
+            boolean result = flights.add(editedFlight);
+            saveFlights();
+            return result;
         }
         return false;
     }
@@ -41,7 +44,9 @@ public class FlightsDao implements IFlightsDao{
     @Override
     public boolean edit(String id, Flight editedFlight) {
         if(flights.remove(getFlightById(id))){
-            return flights.add(editedFlight);
+            boolean result = flights.add(editedFlight);
+            saveFlights();
+            return result;
         }
         return false;
     }
@@ -49,12 +54,31 @@ public class FlightsDao implements IFlightsDao{
 
     @Override
     public boolean delete(Flight flight) {
-        return flights.remove(flight);
+        boolean result = flights.remove(flight);
+        if(result) {
+            saveFlights();
+        }
+        return result;
     }
 
     @Override
     public boolean delete(String id) {
-        return flights.remove(getFlightById(id));
+        boolean result = flights.remove(getFlightById(id));
+        if(result) {
+            saveFlights();
+        }
+        return result;
+    }
+
+    @Override
+    public void generateRandomFlights(int quantity) {
+        ArrayList<Flight> generatedFlights = (ArrayList<Flight>) FlightGenerator.generateRandomFlights(quantity);
+        if(!getAll().isEmpty()){
+            getAll().removeAll(getAll());
+        }
+        for (Flight flight : generatedFlights) {
+            create(flight);
+        }
     }
 
     private void saveFlights() {
