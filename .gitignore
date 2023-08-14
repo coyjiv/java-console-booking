@@ -1,6 +1,4 @@
 .idea
 out
 flight_booking.log
-bookings.ser
-flights.ser
 *.ser
