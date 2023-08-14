@@ -1,7 +1,10 @@
 package controllers;
 
+import models.Login;
+import models.Password;
 import utils.ConsoleColors;
 import utils.Logger;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -9,11 +12,13 @@ import java.util.Scanner;
 public class MainController implements ConsoleColors {
     private final FlightsController flightsController;
     private final BookingsController bookingsController;
+    private final SessionController sessionController;
     private Logger logger;
 
-    public MainController(FlightsController flightController, BookingsController bookingController) {
+    public MainController(FlightsController flightController, BookingsController bookingController, SessionController sessionController) {
         this.flightsController = flightController;
         this.bookingsController = bookingController;
+        this.sessionController = sessionController;
     }
 
     public void run() {
@@ -23,11 +28,34 @@ public class MainController implements ConsoleColors {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
+
+            if (sessionController.getSession().getUser() == null) {
+
+                Logger.notCorrectInput(YELLOW_BOLD + "Ви не авторизовані!" + RESET);
+
+                Logger.systemMessage(CYAN + "Будь ласка , введіть логін :" + RESET);
+
+                Login login = new Login(scanner.nextLine().trim());
+
+                logger.correctInput(login.toString());
+
+                Logger.systemMessage(CYAN + "Будь ласка , введіть пароль :" + RESET);
+                Password password = new Password(scanner.nextLine().trim());
+
+                logger.correctInput(password.toString());
+
+                if (login.toString().length() < 1 || password.toString().length() < 1) {
+                    Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Логін та пароль не повинні бути пустими!" + RESET);
+                    continue;
+                }
+                sessionController.authentication(login, password);
+            }
+
             displayMenu();
 
             if (!scanner.hasNextInt()) {
                 Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Ви ввели не число, будь ласка, введіть число. " + RESET);
-              
+
                 scanner.nextLine();
                 continue;
             }
@@ -54,6 +82,9 @@ public class MainController implements ConsoleColors {
                 case 5:
                     showMyBookings(scanner);
                     break;
+                case 6:
+                    sessionController.logout();
+                    break;
                 case 0:
                     Logger.systemMessage(YELLOW_BOLD + "До побачення!" + RESET);
                     return;
@@ -62,7 +93,6 @@ public class MainController implements ConsoleColors {
             }
         }
     }
-
 
     private void displayMenu() {
         Logger.displayMenuLog();
@@ -75,6 +105,7 @@ public class MainController implements ConsoleColors {
                                     3. Пошук та бронювання рейсу
                                     4. Скасувати бронювання
                                     5. Мої рейси
+                                    6. Завершити сесію
                                     0. Вихід
                                 ______________________________________
                 """ + RESET);
@@ -107,7 +138,7 @@ public class MainController implements ConsoleColors {
         Logger.systemMessage(CYAN_BOLD + "Введіть дату (у форматі рік-місяць-день, наприклад, 2023-08-04): " + RESET);
         String dateInput = scanner.nextLine();
         logger.correctInput(dateInput);
-      
+
         LocalDate date = null;
 
         try {
@@ -151,11 +182,27 @@ public class MainController implements ConsoleColors {
     }
 
     private void showMyBookings(Scanner scanner) {
-      
-        Logger.systemMessage(CYAN_BOLD + "Введіть прізвище та ім'я: " + RESET);
-        String passengerName = scanner.nextLine();
-        logger.correctInput(passengerName);
 
+        if (sessionController.getSession().getUser().getName() == null || sessionController.getSession().getUser().getSurname() == null) {
+
+            Logger.systemMessage(CYAN_BOLD + "Введіть прізвище: " + RESET);
+            String surname = scanner.nextLine().trim();
+            logger.correctInput(surname);
+
+            Logger.systemMessage(CYAN_BOLD + "Введіть ім'я: " + RESET);
+            String name = scanner.nextLine().trim();
+            logger.correctInput(name);
+
+            if (surname.length() < 1 || name.length() < 1) {
+                Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: прізвище та ім'я не повинні бути пустими!" + RESET);
+            } else {
+                sessionController.getSession().getUser().setSurname(surname);
+                sessionController.getSession().getUser().setName(name);
+            }
+
+        }
+        //TODO: Доработать!
+        sessionController.getSession().getUser().getBookings();
         //TODO: Виклик методу контролера бронювання
     }
 }
