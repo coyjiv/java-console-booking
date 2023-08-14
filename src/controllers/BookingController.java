@@ -2,6 +2,7 @@ package controllers;
 
 import models.Booking;
 import models.Flight;
+import models.User;
 import services.Booking.BookingService;
 
 import java.util.Random;
@@ -21,14 +22,10 @@ public class BookingController {
                 .map(booking -> atomicInteger.getAndIncrement() + " )" + booking)
                 .forEach(System.out::println);
     }
-    public void bookRelevantFlight(Flight flight, Scanner scanner){
+    public void bookRelevantFlight(Flight flight, User passengerProfile){
         int ID = bookingService.getAll().size() + 1;
-        scanner.nextLine();
-        System.out.print("Введіть ваше прізвище та ім'я: ");
-        String passenger = scanner.nextLine();
-        Random random = new Random();
-        String seat = String.valueOf(random.nextInt(flight.getTotalSeats() + 1) + flight.getTicketCount());
-        Booking booking = new Booking(ID, flight, passenger, seat);
+        String seat = String.valueOf(flight.getTicketCount() - (flight.getTicketCount() - 1));
+        Booking booking = new Booking(ID, flight, passengerProfile, seat);
         bookingService.create(booking);
         System.out.println("Ви успішно забронювали рейс. Інформація про бронювання: " + booking);
     }

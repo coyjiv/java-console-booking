@@ -50,82 +50,17 @@ public class FlightsController {
         }
     }
 
-    private void displayAllRelevantFlights(Scanner scanner) {
-        scanner.nextLine();
-
-        System.out.print("Введіть стартове місто для пошуку рейсів (англійською, наприклад Kyiv): ");
-        String startLocation = scanner.nextLine();
-        System.out.print("Введіть місто призначення для пошуку рейсів (англійською, наприклад Kyiv): ");
-        String endLocation = scanner.nextLine();
-        System.out.print("*Необов'язково - Введіть бажану дату (або дату і час) рейсу (формат 31.07.2023): ");
-
-        LocalDateTime departureDate = null;
-
-        try {
-            departureDate = parseDate(scanner.nextLine());
-        } catch (DateTimeParseException e) {
-            System.out.println("Неправильний формат дати, продовжую без початкової дати.");
-        }
-
-        System.out.print("*Необов'язково - Введіть бажану дату (або дату і час) рейсу (формат 31.07.2023): ");
-
-        LocalDateTime arrivalDate = null;
-        try {
-            String input = scanner.nextLine();
-            if (!input.isEmpty()) {
-                arrivalDate = parseDate(input);
-            }
-        } catch (DateTimeParseException e) {
-            System.out.println("Неправильний формат дати, продовжую без кінцевої дати.");
-        }
-
-
-        int ticketCount = 0;
-
-        while (true) {
-            System.out.print("Кількість квитків: ");
-            try {
-                ticketCount = scanner.nextInt();
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("Будь ласка, введіть коректну кількість квитків.");
-                scanner.nextLine();
-            }
-        }
-        System.out.println("Результати пошуку : ");
+    public List<Flight>  displayAllRelevantFlights(String startLocation, String endLocation,LocalDateTime departureDate,LocalDateTime arrivalDate,int ticketCount) {
 
         List<Flight> results = flightsService.getRelevantFlights(startLocation, endLocation, departureDate, arrivalDate, ticketCount);
         if (results.isEmpty()) {
             System.out.println("Нічого не знайдено");
-        } else {
-            AtomicInteger counter = new AtomicInteger(1);
-            results.stream()
-                    .map(flight -> counter.getAndIncrement() + " )" + flight)
-                    .forEach(System.out::println);
         }
+        return  results;
 
-
-        int choice = 0;
-        while (true) {
-            System.out.println("Якщо бажаєте забронювати рейс, введіть його порядковий номер. Якщо бажаєте вийти, натисніть 0.");
-            try {
-                choice = scanner.nextInt();
-                if (choice >= 1 && choice <= results.size()) {
-                    bookingController.bookRelevantFlight(results.get(choice - 1), scanner);
-                } else if (choice == 0) {
-                    break;
-                } else {
-                    throw new InputMismatchException();
-                }
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("Будь ласка, введіть коректну опцію.");
-                scanner.nextLine();
-            }
-        }
     }
 
-    private LocalDateTime parseDate(String dateStr) {
+    public LocalDateTime parseDate(String dateStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         try {
             return LocalDate.parse(dateStr, formatter).atStartOfDay();
