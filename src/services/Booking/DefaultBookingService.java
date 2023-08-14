@@ -15,18 +15,11 @@ public class DefaultBookingService implements BookingService{
 
     @Override
     public Set<Booking> getAll() {
-        return bookingDao.getAll();
+        return this.bookingDao.getAll();
     }
 
-    @Override
-    public Booking getBookingById(int ID) throws NoSuchElementException {
-        Optional<Booking> book = getAll().stream().filter(booking -> booking.getID() == ID).findFirst();
-
-        if (book.isPresent()){
-            return (Booking) book.get();
-        } else {
-            throw new NoSuchElementException("Бронювання за таким ID не існує !");
-        }
+    public Booking getBookingById(int ID) {
+        return this.bookingDao.getBookingById(ID);
     }
 
     @Override
@@ -48,7 +41,12 @@ public class DefaultBookingService implements BookingService{
     }
 
     @Override
-    public void cancel(Booking book) {
-        bookingDao.cancel(book);
+    public boolean cancel(int ID) {
+        return this.bookingDao.cancel(ID);
+    }
+
+    @Override
+    public boolean cancel(Booking booking) {
+        return this.bookingDao.cancel(booking);
     }
 }

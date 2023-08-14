@@ -10,5 +10,6 @@ public interface BookingService {
     Booking getBookingById(int ID);
     Set<Booking> getAllPassengerBooks(String passenger);
     void create(Booking book);
-    void cancel(Booking book);
+    boolean cancel(int ID);
+    boolean cancel(Booking booking);
 }

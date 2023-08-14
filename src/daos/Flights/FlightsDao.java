@@ -1,8 +1,6 @@
 package daos.Flights;
-
 import models.Flight;
 import utils.FlightGenerator;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;

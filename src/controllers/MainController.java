@@ -8,12 +8,12 @@ import java.util.Scanner;
 
 public class MainController implements ConsoleColors {
     private final FlightsController flightsController;
-    private final BookingsController bookingsController;
+    private final BookingController bookingController;
     private Logger logger;
 
-    public MainController(FlightsController flightController, BookingsController bookingController) {
+    public MainController(FlightsController flightController, BookingController bookingController) {
         this.flightsController = flightController;
-        this.bookingsController = bookingController;
+        this.bookingController = bookingController;
     }
 
     public void run() {
