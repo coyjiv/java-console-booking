@@ -9,7 +9,7 @@ public interface IUsersDao {
 
     public User getUser(Login login , Password password);
 
-    public void createUser(Login login , Password password);
+    public void createUser(String name, String surname,Login login , Password password);
 
     public void saveUsers();
 

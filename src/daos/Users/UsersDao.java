@@ -11,6 +11,10 @@ import java.util.Set;
 public class UsersDao implements IUsersDao {
     private final Set<User> users = new HashSet<>();
 
+    public Set<User> getAllUsers() {
+        return users;
+    }
+
     private static final String USERS_FILE_NAME = "users.ser";
 
     public UsersDao() {
@@ -28,8 +32,8 @@ public class UsersDao implements IUsersDao {
     }
 
     @Override
-    public void createUser(Login login, Password password) {
-        users.add(new User(login, password));
+    public void createUser(String name, String surname,Login login, Password password) {
+        users.add(new User(name,surname,login, password));
     }
 
     @Override

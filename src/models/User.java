@@ -1,18 +1,25 @@
 package models;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class User {
+public class User implements Serializable {
     private String name;
     private String surname;
     private Login login;
     private Password password;
-    private final Set<Booking> bookings = new HashSet<>();
+    private  Set<Booking> bookings = new HashSet<>();
 
-    public User(Login login, Password password) {
+    public User(String name, String surname, Login login, Password password) {
+        this.name = name;
+        this.surname = surname;
         this.login = login;
         this.password = password;
+    }
+
+    public void setBookings(Set<Booking> bookings) {
+        this.bookings = bookings;
     }
 
     public String getName() {

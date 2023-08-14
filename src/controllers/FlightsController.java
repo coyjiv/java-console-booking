@@ -61,7 +61,7 @@ public class FlightsController {
         }
     }
 
-    private void displayFlightInformation(Scanner scanner) {
+    public void displayFlightInformation(Scanner scanner) {
         scanner.nextLine();
         System.out.println("Введіть id рейсу для пошуку: ");
         String flightId = scanner.nextLine();
@@ -74,7 +74,7 @@ public class FlightsController {
         }
     }
 
-    private void displayAllFlightIn24h(Scanner scanner) {
+    public void displayAllFlightIn24h(Scanner scanner) {
         scanner.nextLine();
         System.out.print("Введіть місто для пошуку рейсів (англійською, наприклад Kyiv): ");
         String city = scanner.nextLine();

@@ -1,8 +1,9 @@
 package models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Password {
+public class Password implements Serializable {
     String password;
 
     public Password(String password) {

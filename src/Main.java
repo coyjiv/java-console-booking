@@ -2,12 +2,12 @@ import controllers.*;
 import daos.Booking.BookingDao;
 import daos.Booking.FileBookingDao;
 import daos.Flights.FlightsDao;
-import daos.Sessions.SessionsDao;
+import daos.Session.SessionDao;
 import daos.Users.UsersDao;
 import services.Booking.BookingService;
 import services.Booking.DefaultBookingService;
 import services.Flights.FlightsService;
-import services.Session.SessionsService;
+import services.Session.SessionService;
 import services.Users.UsersService;
 
 public class Main {
@@ -24,9 +24,9 @@ public class Main {
         UsersService usersService = new UsersService(usersDao);
         UsersController usersController = new UsersController(usersService);
 
-        SessionsDao sessionsDao = new SessionsDao();
-        SessionsService sessionsService = new SessionsService(sessionsDao);
-        SessionController sessionController = new SessionController(sessionsService,usersController);
+        SessionDao sessionsDao = new SessionDao();
+        SessionService sessionsService = new SessionService(sessionsDao, usersController);
+        SessionController sessionController = new SessionController(sessionsService);
 
         MainController main = new MainController(flightsController, bookingController,sessionController);
 
