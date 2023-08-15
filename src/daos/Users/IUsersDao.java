@@ -5,7 +5,11 @@ import models.Login;
 import models.Password;
 import models.User;
 
+import java.util.Set;
+
 public interface IUsersDao {
+    public Set<Booking> getAllBookings();
+
     public void addBook(User user, Booking book);
 
     public void deleteBook(User user, Booking book);

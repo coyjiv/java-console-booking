@@ -16,6 +16,8 @@ public class UsersDao implements IUsersDao {
         return users;
     }
 
+
+
     private static final String USERS_FILE_NAME = "users.ser";
 
     public UsersDao() {
@@ -35,6 +37,17 @@ public class UsersDao implements IUsersDao {
     @Override
     public void createUser(String name, String surname,Login login, Password password) {
         users.add(new User(name,surname,login, password));
+    }
+
+    @Override
+    public Set<Booking> getAllBookings() {
+        Set<Booking> allBookings = new HashSet<>();
+
+        for (User user : users){
+            allBookings.addAll(user.getBookings());
+        }
+
+        return allBookings;
     }
 
     @Override

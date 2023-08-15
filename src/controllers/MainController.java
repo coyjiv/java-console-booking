@@ -1,9 +1,11 @@
 package controllers;
 
+import models.Booking;
 import models.Flight;
 import utils.ConsoleColors;
 import utils.Logger;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
@@ -83,7 +85,7 @@ public class MainController implements ConsoleColors {
                 case 2 -> showFlightDetails(scanner);
                 case 3 -> searchAndBookFlight(scanner);
                 case 4 -> cancelBooking(scanner);
-                case 5 -> showMyBookings(scanner);
+                case 5 -> showMyBookings();
                 case 6 -> sessionController.logout();
                 case 0 -> {
                     Logger.systemMessage(YELLOW_BOLD + "До побачення!" + RESET);
@@ -127,7 +129,7 @@ public class MainController implements ConsoleColors {
         System.out.println("Введіть місто для пошуку рейсів (англійською, наприклад Kyiv): , або просто натисніть Enter щоб побачити всі рейси");
         System.out.print("Місто : ");
         String startLocation = scanner.nextLine();
-        if(!startLocation.isEmpty()){
+        if (!startLocation.isEmpty()) {
             flightsController.displayAllFlightIn24h(startLocation);
         } else {
             Logger.notCorrectInput(YELLOW_BOLD+"Місто не вказано, показую усі рейси "+RESET);
@@ -196,7 +198,7 @@ public class MainController implements ConsoleColors {
             try {
                 choice = scanner.nextInt();
                 if (choice >= 1) {
-                    bookingController.bookRelevantFlight(flightsController.getFlight(String.valueOf(choice)), sessionController.getSession().getUser());
+                    bookingController.bookRelevantFlight(flightsController.getFlight(String.valueOf(choice)));
                 } else if (choice == 0) {
                     break;
                 } else {
@@ -223,12 +225,20 @@ public class MainController implements ConsoleColors {
 
         Logger.correctInput(Integer.toString(bookingId));
 
-        //TODO: Виклик методу контролера бронювання
+       if( bookingController.deleteBook(bookingId)){
+           Logger.correctInput(GREEN_BOLD + "Бронювання видалено!" + RESET);
+       }else {
+           Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Бронювання НЕ видалено!" + RESET);
+       }
     }
 
-    private void showMyBookings(Scanner scanner) {
-
-        //TODO: Проверить и доработать!
-        System.out.println(sessionController.getSession().getUser().getBookings());
+    private void showMyBookings() {
+        if (sessionController.getSession().getUser().getBookings().size() < 1){
+            Logger.notCorrectInput(RED_BOLD_BRIGHT + " Ви ще нічого не забронювали!" + RESET);
+            return;
+        }
+        for (Booking booking : sessionController.getSession().getUser().getBookings()) {
+            Logger.systemMessage(GREEN_BOLD + booking.toString() + RESET);
+        }
     }
 }

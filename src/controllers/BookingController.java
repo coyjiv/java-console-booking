@@ -18,18 +18,16 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-    public void displayAllPassengerBooks(String passenger){
-        AtomicInteger atomicInteger = new AtomicInteger(1);
-
-        bookingService.getAllPassengerBooks(passenger).stream()
-                .map(booking -> atomicInteger.getAndIncrement() + " )" + booking)
-                .forEach(b->Logger.systemMessage(GREEN_BRIGHT+ b + RESET));
-    }
-    public void bookRelevantFlight(Flight flight, User passengerProfile){
+    public void bookRelevantFlight(Flight flight){
         int ID = bookingService.getAll().size() + 1;
         String seat = String.valueOf(flight.getTicketCount() - 1);
-        Booking booking = new Booking(ID, flight, passengerProfile, seat);
+        Booking booking = new Booking(ID, flight, seat);
         bookingService.create(booking);
         Logger.systemMessage(GREEN_BOLD + "Ви успішно забронювали рейс. Інформація про бронювання: " + booking + RESET);
     }
+
+   public boolean deleteBook(int id){
+       return bookingService.cancel(id);
+   }
+
 }

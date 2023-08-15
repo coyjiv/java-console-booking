@@ -16,17 +16,17 @@ public class Main {
         UsersService usersService = new UsersService(usersDao);
         UsersController usersController = new UsersController(usersService);
 
-        BookingDao bookingDao = new FileBookingDao();
+        SessionDao sessionsDao = new SessionDao();
+        SessionService sessionsService = new SessionService(sessionsDao, usersService);
+        SessionController sessionController = new SessionController(sessionsService);
+
+        BookingDao bookingDao = new FileBookingDao(sessionsDao,usersDao);
         BookingService bookingService = new DefaultBookingService(bookingDao);
         BookingController bookingController = new BookingController(bookingService);
 
         FlightsDao flightsDao = new FlightsDao();
         FlightsService flightsService = new FlightsService(flightsDao);
         FlightsController flightsController = new FlightsController(flightsService);
-
-        SessionDao sessionsDao = new SessionDao();
-        SessionService sessionsService = new SessionService(sessionsDao, usersService);
-        SessionController sessionController = new SessionController(sessionsService);
 
         MainController main = new MainController(flightsController, bookingController, sessionController);
 
