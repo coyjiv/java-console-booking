@@ -71,7 +71,7 @@ public class SessionController implements ConsoleColors {
         Logger.correctInput(password.toString());
 
 
-        if (name.length() < 1 || surname.length() < 1 || login.toString().length() < 1 || password.toString().length() < 1) {
+        if (name.isEmpty() || surname.isEmpty() || login.toString().isEmpty() || password.toString().isEmpty()) {
             Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Прізвище, ім'я, логін та пароль не повинні бути пустими!" + RESET);
             return false;
         }

@@ -4,9 +4,13 @@ import daos.Session.SessionDao;
 import daos.Users.UsersDao;
 import models.Booking;
 import models.Flight;
+import utils.Logger;
 
 import java.io.*;
 import java.util.*;
+
+import static utils.ConsoleColors.RED_BRIGHT;
+import static utils.ConsoleColors.RESET;
 
 public class FileBookingDao implements BookingDao {
 
@@ -25,13 +29,14 @@ public class FileBookingDao implements BookingDao {
     }
 
     @Override
-    public Booking getBookingById(int ID) throws NoSuchElementException {
+    public Booking getBookingById(int ID) {
         Optional<Booking> book = getAll().stream().filter(booking -> booking.getID() == ID).findFirst();
 
         if (book.isPresent()) {
             return (Booking) book.get();
         } else {
-            throw new NoSuchElementException("Бронювання за таким ID не існує !");
+            Logger.notCorrectInput(RED_BRIGHT+"Бронювання за таким ID не існує !"+RESET);
+            return null;
         }
     }
 

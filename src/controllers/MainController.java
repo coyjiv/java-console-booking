@@ -2,6 +2,7 @@ package controllers;
 
 import models.Booking;
 import models.Flight;
+import services.Users.UsersService;
 import utils.ConsoleColors;
 import utils.Logger;
 
@@ -213,7 +214,14 @@ public class MainController implements ConsoleColors {
     }
 
     private void cancelBooking(Scanner scanner) {
-
+        if (sessionController.getSession().getUser().getBookings().isEmpty()){
+            Logger.notCorrectInput(RED_BOLD_BRIGHT + " Ви ще нічого не забронювали!" + RESET);
+            return;
+        }
+        Logger.systemMessage(YELLOW_BOLD + " Ваші бронювання: " + RESET);
+        for (Booking booking : sessionController.getSession().getUser().getBookings()) {
+            Logger.systemMessage(GREEN_BOLD + booking.toString() + RESET);
+        }
         Logger.systemMessage(CYAN_BOLD + "Введіть айді бронювання: " + RESET);
         if (!scanner.hasNextInt()) {
             Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Ви ввели не число, будь ласка, введіть число. " + RESET);
@@ -225,7 +233,7 @@ public class MainController implements ConsoleColors {
 
         Logger.correctInput(Integer.toString(bookingId));
 
-       if( bookingController.deleteBook(bookingId)){
+       if(bookingController.deleteBook(bookingId)){
            Logger.correctInput(GREEN_BOLD + "Бронювання видалено!" + RESET);
        }else {
            Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Бронювання НЕ видалено!" + RESET);
@@ -233,10 +241,11 @@ public class MainController implements ConsoleColors {
     }
 
     private void showMyBookings() {
-        if (sessionController.getSession().getUser().getBookings().size() < 1){
+        if (sessionController.getSession().getUser().getBookings().isEmpty()){
             Logger.notCorrectInput(RED_BOLD_BRIGHT + " Ви ще нічого не забронювали!" + RESET);
             return;
         }
+        Logger.systemMessage(YELLOW_BOLD + " Ваші бронювання: " + RESET);
         for (Booking booking : sessionController.getSession().getUser().getBookings()) {
             Logger.systemMessage(GREEN_BOLD + booking.toString() + RESET);
         }
