@@ -1,11 +1,6 @@
 package controllers;
 
-import daos.Booking.BookingDao;
-import daos.Booking.FileBookingDao;
-import daos.Flights.FlightsDao;
 import models.Flight;
-import services.Booking.BookingService;
-import services.Booking.DefaultBookingService;
 import services.Flights.FlightsService;
 
 import java.time.LocalDate;
@@ -13,7 +8,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class FlightsController {
     private final FlightsService flightsService;
@@ -24,8 +18,13 @@ public class FlightsController {
         this.bookingController = bookingController;
     }
 
+    public void displayAllFlights() {
+        for (Flight flight:flightsService.getAll()) {
+            System.out.println(flight.toString());
+        }
+    }
+
     public void displayFlightInformation(Scanner scanner) {
-        scanner.nextLine();
         System.out.println("Введіть id рейсу для пошуку: ");
         String flightId = scanner.nextLine();
         System.out.print("Результати пошуку : ");
@@ -38,7 +37,6 @@ public class FlightsController {
     }
 
     public void displayAllFlightIn24h(Scanner scanner) {
-        scanner.nextLine();
         System.out.print("Введіть місто для пошуку рейсів (англійською, наприклад Kyiv): ");
         String city = scanner.nextLine();
         System.out.println("\nРезультати пошуку : ");

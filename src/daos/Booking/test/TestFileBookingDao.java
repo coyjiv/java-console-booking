@@ -2,10 +2,11 @@ package daos.Booking.test;
 
 import daos.Booking.BookingDao;
 import daos.Booking.FileBookingDao;
-import models.Booking;
-import models.Flight;
+import models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
@@ -35,7 +36,7 @@ public class TestFileBookingDao {
                 new ArrayList<>(List.of("Buharest")),
                 55
                 );
-        Booking booking = new Booking(1, flight, "Kirilenko Andriy", "47");
+        Booking booking = new Booking(1, flight, new User("Test","TestUser",new Login("testLog"),new Password("testPass")), "47");
 
         assertEquals(0, bookingDao.getAll().size());
         bookingDao.create(booking);
@@ -51,7 +52,7 @@ public class TestFileBookingDao {
                 new ArrayList<>(List.of("Buharest")),
                 55
         );
-        Booking booking = new Booking(1, flight, "Kirilenko Andriy", "47");
+        Booking booking = new Booking(1, flight, new User("Test","TestUser",new Login("testLog"),new Password("testPass")), "47");
 
         bookingDao.create(booking);
         assertEquals(1, bookingDao.getAll().size());
@@ -67,7 +68,7 @@ public class TestFileBookingDao {
                 new ArrayList<>(List.of("Buharest")),
                 55
         );
-        Booking booking = new Booking(1, flight, "Kirilenko Andriy", "47");
+        Booking booking = new Booking(1, flight, new User("Test","TestUser",new Login("testLog"),new Password("testPass")), "47");
 
         bookingDao.create(booking);
         assertEquals(1, bookingDao.getAll().size());
@@ -84,7 +85,7 @@ public class TestFileBookingDao {
                 new ArrayList<>(List.of("Buharest")),
                 55
         );
-        Booking booking = new Booking(1, flight, "Kirilenko Andriy", "47");
+        Booking booking = new Booking(1, flight, new User("Test","TestUser",new Login("testLog"),new Password("testPass")), "47");
 
         bookingDao.create(booking);
 
@@ -101,7 +102,7 @@ public class TestFileBookingDao {
                 new ArrayList<>(List.of("Buharest")),
                 55
         );
-        Booking booking = new Booking(1, flight, "Kirilenko Andriy", "47");
+        Booking booking = new Booking(1, flight, new User("Test","TestUser",new Login("testLog"),new Password("testPass")), "47");
 
         bookingDao.create(booking);
 

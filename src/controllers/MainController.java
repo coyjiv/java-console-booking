@@ -4,7 +4,6 @@ import models.Flight;
 import utils.ConsoleColors;
 import utils.Logger;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
@@ -132,7 +131,8 @@ public class MainController implements ConsoleColors {
     }
 
     private void showFlightBoard() {
-        flightsController.displayAllFlightIn24h(scanner);
+        Logger.displayMenuLog();
+       flightsController.displayAllFlights();
     }
 
     private void showFlightDetails(Scanner scanner) {
@@ -144,7 +144,7 @@ public class MainController implements ConsoleColors {
         String startLocation = scanner.nextLine();
         System.out.print("Введіть місто призначення для пошуку рейсів (англійською, наприклад Kyiv): ");
         String endLocation = scanner.nextLine();
-        System.out.print("*Необов'язково - Введіть бажану дату (або дату і час) рейсу (формат 31.07.2023): ");
+        System.out.print("*Необов'язково - Введіть бажану початкову дату (або дату і час) рейсу (формат 31.07.2023): ");
 
         LocalDateTime departureDate = null;
 
@@ -154,7 +154,7 @@ public class MainController implements ConsoleColors {
             System.out.println("Неправильний формат дати, продовжую без початкової дати.");
         }
 
-        System.out.print("*Необов'язково - Введіть бажану дату (або дату і час) рейсу (формат 31.07.2023): ");
+        System.out.print("*Необов'язково - Введіть бажану кінцеву дату (або дату і час) рейсу (формат 31.07.2023): ");
 
         LocalDateTime arrivalDate = null;
         try {

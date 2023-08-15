@@ -1,5 +1,6 @@
 package daos.Users;
 
+import models.Booking;
 import models.Login;
 import models.Password;
 import models.User;
@@ -34,6 +35,16 @@ public class UsersDao implements IUsersDao {
     @Override
     public void createUser(String name, String surname,Login login, Password password) {
         users.add(new User(name,surname,login, password));
+    }
+
+    @Override
+    public void addBook(User user, Booking book) {
+        user.getBookings().add(book);
+    }
+
+    @Override
+    public void deleteBook(User user, Booking book) {
+        user.getBookings().remove(book);
     }
 
     @Override

@@ -62,8 +62,8 @@ public class Flight implements Serializable {
         this.totalSeats = totalSeats;
     }
 
-    public String getDepartureCity(){
-        return route.isEmpty()?null: route.get(0);
+    public String getDepartureCity() {
+        return route.isEmpty() ? null : route.get(0);
     }
 
     public void setDepartureDate(LocalDateTime departureDate) {
@@ -96,7 +96,7 @@ public class Flight implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("| id: %-10s |  Date:  %-20s | Departure date : %-20s | Route: %-50s |",
+        return String.format("| id: %-10s |  Departure date:  %-20s | Arrive date : %-20s | Route: %-50s |",
                 getId(),
                 getDepartureDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
                 getArrivalDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
