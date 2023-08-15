@@ -132,7 +132,7 @@ public class MainController implements ConsoleColors {
         if (!startLocation.isEmpty()) {
             flightsController.displayAllFlightIn24h(startLocation);
         } else {
-            System.out.println("Місто не вказано, показую усі рейси ");
+            Logger.notCorrectInput(YELLOW_BOLD+"Місто не вказано, показую усі рейси "+RESET);
             flightsController.displayAllFlights();
         }
     }
@@ -153,7 +153,7 @@ public class MainController implements ConsoleColors {
         try {
             departureDate = flightsController.parseDate(scanner.nextLine());
         } catch (DateTimeParseException e) {
-            System.out.println("Неправильний формат дати, продовжую без початкової дати.");
+            Logger.systemMessage(YELLOW_BOLD+"Неправильний формат дати, продовжую без початкової дати." + RESET);
         }
 
         System.out.print("*Необов'язково - Введіть бажану кінцеву дату (або дату і час) рейсу (формат 31.07.2023): ");
@@ -165,7 +165,8 @@ public class MainController implements ConsoleColors {
                 arrivalDate = flightsController.parseDate(input);
             }
         } catch (DateTimeParseException e) {
-            System.out.println("Неправильний формат дати, продовжую без кінцевої дати.");
+            Logger.systemMessage(YELLOW_BOLD+"Неправильний формат дати, продовжую без кінцевої дати." + RESET);
+
         }
 
 
@@ -185,9 +186,9 @@ public class MainController implements ConsoleColors {
         List<Flight> resultOfSearch = flightsController.displayAllRelevantFlights(startLocation, endLocation, departureDate, arrivalDate, ticketCount);
 
         if (resultOfSearch.isEmpty()) {
-            System.out.println("Нічого не знайдено");
+            Logger.notCorrectInput(RED_BOLD_BRIGHT+"Нічого не знайдено"+RESET);
         } else {
-            resultOfSearch.forEach(System.out::println);
+            resultOfSearch.forEach(f->Logger.systemMessage(GREEN_BOLD+f+RESET));
         }
 
         int choice = 0;
@@ -205,7 +206,7 @@ public class MainController implements ConsoleColors {
                 }
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Будь ласка, введіть коректну опцію.");
+                Logger.notCorrectInput(RED_BOLD_BRIGHT+"Будь ласка, введіть коректну опцію."+RESET);
                 scanner.nextLine();
             }
         }

@@ -1,7 +1,8 @@
 package controllers;
 
-import models.Flight;;
+import models.Flight;
 import services.Flights.FlightsService;
+import utils.Logger;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,9 +10,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
+import static utils.ConsoleColors.*;
+
 public class FlightsController {
     private final FlightsService flightsService;
-
 
     public FlightsController(FlightsService flightsService) {
         this.flightsService = flightsService;
@@ -20,7 +22,7 @@ public class FlightsController {
 
     public void displayAllFlights() {
         for (Flight flight:flightsService.getAll()) {
-            System.out.println(flight.toString());
+            Logger.systemMessage(GREEN_BOLD + flight + RESET);
         }
         System.out.println("\n\n\n");
     }
@@ -31,9 +33,9 @@ public class FlightsController {
         System.out.println("Результати пошуку : ");
         Flight foundFlight = flightsService.getFlightInformation(flightId);
         if (foundFlight != null) {
-            System.out.println(foundFlight);
+            Logger.systemMessage(GREEN_BOLD + foundFlight + RESET);
         } else {
-            System.out.println("Нічого не знайдено.");
+            Logger.notCorrectInput(RED_BOLD_BRIGHT+"Нічого не знайдено."+RESET);
         }
     }
 
@@ -41,9 +43,9 @@ public class FlightsController {
         System.out.println("\nРезультати пошуку : ");
         Set<Flight> results = flightsService.getAllFlightsIn24h(city);
         if (results.isEmpty()) {
-            System.out.println("Нічого не знайдено");
+            Logger.notCorrectInput(RED_BOLD_BRIGHT+"Нічого не знайдено."+RESET);
         } else {
-            results.forEach(System.out::println);
+            results.forEach(f->Logger.systemMessage(GREEN_BOLD + f + RESET));
         }
     }
 

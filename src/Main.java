@@ -26,7 +26,6 @@ public class Main {
 
         FlightsDao flightsDao = new FlightsDao();
         FlightsService flightsService = new FlightsService(flightsDao);
-        flightsService.generateRandomFlights(250);
         FlightsController flightsController = new FlightsController(flightsService);
 
         MainController main = new MainController(flightsController, bookingController, sessionController);

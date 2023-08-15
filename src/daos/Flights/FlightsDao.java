@@ -1,11 +1,15 @@
 package daos.Flights;
 import models.Flight;
 import utils.FlightGenerator;
+import utils.Logger;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
+import static utils.ConsoleColors.*;
 
 public class FlightsDao implements IFlightsDao{
     private final Set<Flight> flights = new HashSet<>();
@@ -74,17 +78,21 @@ public class FlightsDao implements IFlightsDao{
     public void generateRandomFlightsIfTheyDontExist(int quantity) {
         ArrayList<Flight> generatedFlights = (ArrayList<Flight>) FlightGenerator.generateRandomFlights(quantity);
         if(!getAll().isEmpty()){
+            Logger.systemMessage(YELLOW_BRIGHT+"Підключення до бази рейсів встановлене"+RESET);
             return;
         }
+        Logger.systemMessage(YELLOW_BRIGHT+"Підключення до бази рейсів триває"+RESET);
         for (Flight flight : generatedFlights) {
             create(flight);
         }
+        Logger.systemMessage(YELLOW_BRIGHT+"Підключення до бази рейсів встановлене"+RESET);
     }
 
     private void saveFlights() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FLIGHTS_FILE_NAME))) {
             oos.writeObject(flights);
         } catch (IOException e) {
+            Logger.systemMessage(RED_BOLD_BRIGHT+"Помилка збереження бази рейсів"+RESET);
             e.printStackTrace();
         }
     }
@@ -98,6 +106,7 @@ public class FlightsDao implements IFlightsDao{
                     flights.addAll((Set<Flight>) readObject);
                 }
             } catch (IOException | ClassNotFoundException e) {
+                Logger.systemMessage(RED_BOLD_BRIGHT+"Помилка підключення до бази рейсів"+RESET);
                 e.printStackTrace();
             }
         }
