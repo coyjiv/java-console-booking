@@ -13,6 +13,9 @@ public class FlightsService implements IFlightsService{
     public FlightsService(FlightsDao dao){
         this.dao = dao;
     }
+    public Set<Flight> getAll(){
+        return dao.getAll();
+    }
     @Override
     public Flight getFlightInformation(String id) {
        return dao.getFlightById(id);

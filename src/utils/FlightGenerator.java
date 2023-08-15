@@ -18,33 +18,27 @@ public class FlightGenerator {
 
         for (int i = 0; i < numberOfFlights; i++) {
             String id = String.valueOf(i);
-            LocalDateTime date = getRandomDate();
-            LocalDateTime departureDateTime = getRandomDepartureDateTime();
+            LocalDateTime departureDate = getRandomDepartureDate();
+            int daysToAdd = 0;
+            int hoursToAdd = RAND.nextInt(23);
+            int minutesToAdd = RAND.nextInt(60);
+            int secondsToAdd = RAND.nextInt(60);
+            LocalDateTime arriveDate = departureDate.plusDays(daysToAdd).plusHours(hoursToAdd).plusMinutes(minutesToAdd).plusSeconds(secondsToAdd);
+
             ArrayList<String> route = getRandomRoute();
 
             int seats = RAND.nextInt(200) + 50;
 
-            flights.add(new Flight(id, date, departureDateTime, route, seats));
+            flights.add(new Flight(id, departureDate, arriveDate, route, seats));
         }
-
-
         return flights;
     }
 
-    private static LocalDateTime getRandomDate() {
-        int daysToSubtract = RAND.nextInt(10);
+    private static LocalDateTime getRandomDepartureDate() {
+        int daysToSubtract = RAND.nextInt(4);
         int hoursToSubtract = RAND.nextInt(24);
-        return LocalDateTime.now().minusDays(daysToSubtract).minusHours(hoursToSubtract);
+        return LocalDateTime.now().plusDays(daysToSubtract).plusHours(hoursToSubtract);
     }
-
-    private static LocalDateTime getRandomDepartureDateTime() {
-        int daysToAdd = RAND.nextInt(10);
-        int hoursToAdd = RAND.nextInt(24);
-        int minutesToAdd = RAND.nextInt(60);
-        int secondsToAdd = RAND.nextInt(60);
-        return LocalDateTime.now().plusDays(daysToAdd).plusHours(hoursToAdd).plusMinutes(minutesToAdd).plusSeconds(secondsToAdd);
-    }
-
 
     private static ArrayList<String> getRandomRoute() {
         ArrayList<String> route = new ArrayList<>();
@@ -62,10 +56,5 @@ public class FlightGenerator {
         route.add(endCity);
 
         return route;
-    }
-
-    public static void main(String[] args) {
-        List<Flight> flights = generateRandomFlights(10);
-        flights.forEach(System.out::println);
     }
 }

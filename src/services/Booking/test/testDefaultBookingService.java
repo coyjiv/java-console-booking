@@ -2,11 +2,13 @@ package services.Booking.test;
 
 import daos.Booking.BookingDao;
 import daos.Booking.FileBookingDao;
-import models.Booking;
-import models.Flight;
+import daos.Users.UsersDao;
+import models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.mockito.Mockito;
 import services.Booking.BookingService;
 import services.Booking.DefaultBookingService;
 
@@ -41,8 +43,8 @@ public class testDefaultBookingService {
                 new ArrayList<>(List.of("Dubai")),
                 55
         );
-        Booking booking1 = new Booking(1, flight1, "Kirilenko Andriy", "47");
-        Booking booking2 = new Booking(2, flight2, "Kirilenko Andriy", "24");
+        Booking booking1 = new Booking(1, flight1, new User("Test","TestUser",new Login("testLog"),new Password("testPass")), "47");
+        Booking booking2 = new Booking(2, flight2, new User("Test","TestUser",new Login("testLog"),new Password("testPass")), "24");
 
         bookingService.create(booking1);
         bookingService.create(booking2);

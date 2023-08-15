@@ -1,11 +1,9 @@
 package services.Session;
 
-import controllers.UsersController;
 import daos.Session.SessionDao;
 import daos.Users.UsersDao;
 import models.Login;
 import models.Password;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import services.Users.UsersService;
@@ -17,29 +15,27 @@ public class TestSessionService {
     SessionService sessionService;
     UsersDao usersDao;
     UsersService usersService;
-    UsersController usersController;
 
     @BeforeEach
     public void beforeEach() {
         usersDao = new UsersDao();
         usersService = new UsersService(usersDao);
-        usersController = new UsersController(usersService);
         sessionDao = new SessionDao();
-        sessionService = new SessionService(sessionDao, usersController);
+        sessionService = new SessionService(sessionDao, usersService);
     }
 
     @Test
     public void testRegistration() {
-        int oldCount = usersDao.getAllUsers().size();
+        int oldCount = usersService.getAllUsers().size();
 
         Login login = new Login("TestLogin");
         Password password = new Password("TestPassword");
 
 
         if (sessionService.registration("TestName", "TestSurname", login, password)) {
-            assertEquals(oldCount + 1, usersDao.getAllUsers().size());
+            assertEquals(oldCount + 1, usersService.getAllUsers().size());
         } else {
-            assertEquals(oldCount, usersDao.getAllUsers().size());
+            assertEquals(oldCount, usersService.getAllUsers().size());
         }
     }
 
@@ -52,7 +48,7 @@ public class TestSessionService {
 
         assertTrue(sessionService.login(login1, password1));
 
-        assertEquals(sessionDao.getSession().getUser(), usersDao.getUser(login1, password1));
+        assertEquals(sessionService.getSession().getUser(), usersService.getUser(login1, password1));
 
     }
 

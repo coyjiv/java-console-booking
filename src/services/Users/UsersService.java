@@ -1,15 +1,30 @@
 package services.Users;
 
 import daos.Users.UsersDao;
+import models.Booking;
 import models.Login;
 import models.Password;
 import models.User;
+
+import java.util.Set;
 
 public class UsersService {
     private final UsersDao usersDao;
 
     public UsersService(UsersDao usersDao) {
         this.usersDao = usersDao;
+    }
+
+    public Set<User> getAllUsers() {
+        return usersDao.getAllUsers();
+    }
+
+    public void addBook(User user, Booking book) {
+        usersDao.addBook(user,book);
+    }
+
+    public void deleteBook(User user, Booking book) {
+        usersDao.deleteBook(user,book);
     }
 
     public User getUser(Login login, Password password) {
