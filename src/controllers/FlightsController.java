@@ -1,6 +1,6 @@
 package controllers;
 
-import models.Flight;
+import models.Flight;;
 import services.Flights.FlightsService;
 
 import java.time.LocalDate;
@@ -11,23 +11,24 @@ import java.util.*;
 
 public class FlightsController {
     private final FlightsService flightsService;
-    private final BookingController bookingController;
 
-    public FlightsController(FlightsService flightsService, BookingController bookingController) {
+
+    public FlightsController(FlightsService flightsService) {
         this.flightsService = flightsService;
-        this.bookingController = bookingController;
+        generateFlightsIfTheyDontExist(250);
     }
 
     public void displayAllFlights() {
         for (Flight flight:flightsService.getAll()) {
             System.out.println(flight.toString());
         }
+        System.out.println("\n\n\n");
     }
 
     public void displayFlightInformation(Scanner scanner) {
-        System.out.println("Введіть id рейсу для пошуку: ");
+        System.out.print("\nВведіть id рейсу для пошуку: ");
         String flightId = scanner.nextLine();
-        System.out.print("Результати пошуку : ");
+        System.out.println("Результати пошуку : ");
         Flight foundFlight = flightsService.getFlightInformation(flightId);
         if (foundFlight != null) {
             System.out.println(foundFlight);
@@ -36,9 +37,7 @@ public class FlightsController {
         }
     }
 
-    public void displayAllFlightIn24h(Scanner scanner) {
-        System.out.print("Введіть місто для пошуку рейсів (англійською, наприклад Kyiv): ");
-        String city = scanner.nextLine();
+    public void displayAllFlightIn24h(String city) {
         System.out.println("\nРезультати пошуку : ");
         Set<Flight> results = flightsService.getAllFlightsIn24h(city);
         if (results.isEmpty()) {
@@ -51,9 +50,6 @@ public class FlightsController {
     public List<Flight>  displayAllRelevantFlights(String startLocation, String endLocation,LocalDateTime departureDate,LocalDateTime arrivalDate,int ticketCount) {
 
         List<Flight> results = flightsService.getRelevantFlights(startLocation, endLocation, departureDate, arrivalDate, ticketCount);
-        if (results.isEmpty()) {
-            System.out.println("Нічого не знайдено");
-        }
         return  results;
 
     }
@@ -65,5 +61,13 @@ public class FlightsController {
         } catch (DateTimeParseException e) {
             return null;
         }
+    }
+
+    public Flight getFlight(String id){
+        return flightsService.getFlight(id);
+    }
+
+    public void generateFlightsIfTheyDontExist(int quantity){
+        flightsService.generateRandomFlights(quantity);
     }
 }

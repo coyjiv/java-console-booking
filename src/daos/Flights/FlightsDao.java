@@ -71,10 +71,10 @@ public class FlightsDao implements IFlightsDao{
     }
 
     @Override
-    public void generateRandomFlights(int quantity) {
+    public void generateRandomFlightsIfTheyDontExist(int quantity) {
         ArrayList<Flight> generatedFlights = (ArrayList<Flight>) FlightGenerator.generateRandomFlights(quantity);
         if(!getAll().isEmpty()){
-            getAll().removeAll(getAll());
+            return;
         }
         for (Flight flight : generatedFlights) {
             create(flight);

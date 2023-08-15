@@ -1,5 +1,7 @@
 package daos.Booking;
 
+import daos.Session.SessionDao;
+import daos.Users.UsersDao;
 import models.Booking;
 import models.Flight;
 
@@ -7,16 +9,19 @@ import java.io.*;
 import java.util.*;
 
 public class FileBookingDao implements BookingDao {
-    private final Set<Booking> bookings = new HashSet<>();
-    private static final String BOOKINGS_FILE_NAME = "bookings.ser";
 
-    public FileBookingDao() {
-        loadBookings();
+    SessionDao sessionDao;
+
+    UsersDao usersDao;
+
+    public FileBookingDao(SessionDao sessionDao, UsersDao usersDao) {
+        this.sessionDao = sessionDao;
+        this.usersDao = usersDao;
     }
 
     @Override
     public Set<Booking> getAll() {
-        return this.bookings;
+        return usersDao.getAllBookings();
     }
 
     @Override
@@ -32,47 +37,25 @@ public class FileBookingDao implements BookingDao {
 
     @Override
     public void create(Booking book) {
-        this.bookings.add(book);
-        saveBookings();
+        sessionDao.getSession().getUser().getBookings().add(book);
+        usersDao.saveUsers();
     }
 
     @Override
     public boolean cancel(int ID) {
-        boolean result = this.bookings.remove(getBookingById(ID));
+        boolean result = sessionDao.getSession().getUser().getBookings().remove(getBookingById(ID));
         if (result) {
-            saveBookings();
+            usersDao.saveUsers();
         }
         return result;
     }
 
     @Override
     public boolean cancel(Booking booking) {
-        boolean result = this.bookings.remove(booking);
+        boolean result = sessionDao.getSession().getUser().getBookings().remove(booking);
         if (result) {
-            saveBookings();
+            usersDao.saveUsers();
         }
         return result;
-    }
-
-    private void saveBookings() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(BOOKINGS_FILE_NAME))) {
-            oos.writeObject(bookings);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadBookings() {
-        File file = new File(BOOKINGS_FILE_NAME);
-        if (file.exists()) {
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-                Object readObject = ois.readObject();
-                if (readObject instanceof Set) {
-                    bookings.addAll((Set<Booking>) readObject);
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

@@ -6,13 +6,11 @@ import java.time.format.DateTimeFormatter;
 public class Booking implements Serializable {
     private int ID;
     private Flight flight;
-    private User passenger;
     private String seat;
 
-    public Booking(int ID, Flight flight, User passenger, String seat) {
+    public Booking(int ID, Flight flight, String seat) {
         this.ID = ID;
         this.flight = flight;
-        this.passenger = passenger;
         this.seat = seat;
     }
 
@@ -30,14 +28,6 @@ public class Booking implements Serializable {
 
     public void setFlight(Flight flight) {
         this.flight = flight;
-    }
-
-    public User getPassenger() {
-        return passenger;
-    }
-
-    public void setPassenger(User passenger) {
-        this.passenger = passenger;
     }
 
     public String getSeat() {
@@ -61,16 +51,14 @@ public class Booking implements Serializable {
     public int hashCode() {
         int result = getID();
         result = 31 * result + getFlight().hashCode();
-        result = 31 * result + getPassenger().hashCode();
         result = 31 * result + getSeat().hashCode();
         return result;
     }
 
     @Override
     public String toString() {
-        return String.format("| id: %d | Passenger: %s | Departure Date:  %-20s | Arrival date : %-20s | Route: %-50s |",
+        return String.format("| id: %d | Departure Date:  %-20s | Arrival date : %-20s | Route: %-50s |",
                 getID(),
-                getPassenger(),
                 flight.getDepartureDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
                 flight.getArrivalDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
                 String.join(" -> ", flight.getRoute()));
