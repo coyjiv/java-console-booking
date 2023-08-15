@@ -20,5 +20,5 @@ public interface IFlightsDao {
 
     boolean delete(String id);
 
-    void generateRandomFlights(int quantity);
+    void generateRandomFlightsIfTheyDontExist(int quantity);
 }
