@@ -47,11 +47,15 @@ public class FlightsService implements IFlightsService{
                             && (arrivalDate == null || !f.getArrivalDate().isAfter(arrivalDate.plusDays(1).minusSeconds(1)));
                 })
                 .filter(f -> f.getTicketCount() >= ticketCount)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public void generateRandomFlights(int quantity) {
-        dao.generateRandomFlights(quantity);
+        dao.generateRandomFlightsIfTheyDontExist(quantity);
+    }
+
+    public Flight getFlight(String id) {
+        return dao.getFlightById(id);
     }
 }

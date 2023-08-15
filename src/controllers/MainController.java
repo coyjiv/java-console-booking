@@ -14,7 +14,7 @@ public class MainController implements ConsoleColors {
     private final FlightsController flightsController;
     private final BookingController bookingController;
     private final SessionController sessionController;
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     public MainController(FlightsController flightController, BookingController bookingController, SessionController sessionController) {
         this.flightsController = flightController;
@@ -49,15 +49,17 @@ public class MainController implements ConsoleColors {
                 Logger.correctInput(Integer.toString(authenticationChoice));
 
                 switch (authenticationChoice) {
-                    case 1:
+                    case 1 -> {
                         if (!sessionController.registration()) continue;
-                        break;
-                    case 2:
+                    }
+                    case 2 -> {
                         if (!sessionController.login()) continue;
-                        break;
-                    default:
+                    }
+                    case 0 -> System.exit(0);
+                    default -> {
                         Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Невідома команда, будь ласка, спробуйте ще раз. " + RESET);
                         continue;
+                    }
                 }
             }
 
@@ -77,29 +79,18 @@ public class MainController implements ConsoleColors {
             scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    showFlightBoard();
-                    break;
-                case 2:
-                    showFlightDetails(scanner);
-                    break;
-                case 3:
-                    searchAndBookFlight(scanner);
-                    break;
-                case 4:
-                    cancelBooking(scanner);
-                    break;
-                case 5:
-                    showMyBookings(scanner);
-                    break;
-                case 6:
-                    sessionController.logout();
-                    break;
-                case 0:
+                case 1 -> showFlightBoard();
+                case 2 -> showFlightDetails(scanner);
+                case 3 -> searchAndBookFlight(scanner);
+                case 4 -> cancelBooking(scanner);
+                case 5 -> showMyBookings(scanner);
+                case 6 -> sessionController.logout();
+                case 0 -> {
                     Logger.systemMessage(YELLOW_BOLD + "До побачення!" + RESET);
                     return;
-                default:
-                    Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Невідома команда, будь ласка, спробуйте ще раз. " + RESET);
+                }
+                default ->
+                        Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Невідома команда, будь ласка, спробуйте ще раз. " + RESET);
             }
         }
     }
@@ -111,7 +102,7 @@ public class MainController implements ConsoleColors {
                                             Головне меню
                                ______________________________________
                                  Оберіть дію:
-                                    1. Онайн-табло
+                                    1. Онлайн-табло
                                     2. Подивитися інформацію про рейс
                                     3. Пошук та бронювання рейсу
                                     4. Скасувати бронювання
@@ -125,14 +116,23 @@ public class MainController implements ConsoleColors {
     private void displayAuthenticationMenu() {
         System.out.println(BLUE + """
                      Оберіть дію:
-                              1. Реэстрація
-                              2. Вхід
+                              1. Реєстрація
+                              2. Логін
+                              0. Вийти з додатку
                 """ + RESET);
     }
 
     private void showFlightBoard() {
         Logger.displayMenuLog();
-       flightsController.displayAllFlights();
+        System.out.println("Введіть місто для пошуку рейсів (англійською, наприклад Kyiv): , або просто натисніть Enter щоб побачити всі рейси");
+        System.out.print("Місто : ");
+        String startLocation = scanner.nextLine();
+        if(!startLocation.isEmpty()){
+            flightsController.displayAllFlightIn24h(startLocation);
+        } else {
+            System.out.println("Місто не вказано, показую усі рейси ");
+            flightsController.displayAllFlights();
+        }
     }
 
     private void showFlightDetails(Scanner scanner) {
@@ -182,13 +182,20 @@ public class MainController implements ConsoleColors {
         System.out.println("Результати пошуку : ");
         List<Flight> resultOfSearch = flightsController.displayAllRelevantFlights(startLocation, endLocation, departureDate, arrivalDate, ticketCount);
 
+        if (resultOfSearch.isEmpty()) {
+            System.out.println("Нічого не знайдено");
+        } else {
+            resultOfSearch.forEach(System.out::println);
+        }
+
         int choice = 0;
         while (true) {
             System.out.println("Якщо бажаєте забронювати рейс, введіть його порядковий номер. Якщо бажаєте вийти, натисніть 0.");
+            System.out.print("\nID рейсу для бронювання : ");
             try {
                 choice = scanner.nextInt();
-                if (choice >= 1 && choice <= resultOfSearch.size()) {
-                    bookingController.bookRelevantFlight(resultOfSearch.get(choice - 1), sessionController.getSession().getUser());
+                if (choice >= 1) {
+                    bookingController.bookRelevantFlight(flightsController.getFlight(String.valueOf(choice)), sessionController.getSession().getUser());
                 } else if (choice == 0) {
                     break;
                 } else {
