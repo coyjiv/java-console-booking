@@ -24,7 +24,6 @@ public class DefaultBookingService implements BookingService{
 
     @Override
     public Set<Booking> getAllPassengerBooks(String passenger) {
-
         Set<Booking> passengerBookings = getAll().stream()
                 .filter(booking -> booking.getPassenger().equals(passenger))
                     .collect(Collectors.toCollection(HashSet::new));

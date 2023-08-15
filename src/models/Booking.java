@@ -6,10 +6,10 @@ import java.time.format.DateTimeFormatter;
 public class Booking implements Serializable {
     private int ID;
     private Flight flight;
-    private String passenger;
+    private User passenger;
     private String seat;
 
-    public Booking(int ID, Flight flight, String passenger, String seat) {
+    public Booking(int ID, Flight flight, User passenger, String seat) {
         this.ID = ID;
         this.flight = flight;
         this.passenger = passenger;
@@ -32,11 +32,11 @@ public class Booking implements Serializable {
         this.flight = flight;
     }
 
-    public String getPassenger() {
+    public User getPassenger() {
         return passenger;
     }
 
-    public void setPassenger(String passenger) {
+    public void setPassenger(User passenger) {
         this.passenger = passenger;
     }
 

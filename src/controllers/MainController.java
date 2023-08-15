@@ -1,10 +1,14 @@
 package controllers;
 
+import models.Flight;
 import utils.ConsoleColors;
 import utils.Logger;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class MainController implements ConsoleColors {
@@ -136,39 +140,66 @@ public class MainController implements ConsoleColors {
     }
 
     private void searchAndBookFlight(Scanner scanner) {
+        System.out.print("Введіть стартове місто для пошуку рейсів (англійською, наприклад Kyiv): ");
+        String startLocation = scanner.nextLine();
+        System.out.print("Введіть місто призначення для пошуку рейсів (англійською, наприклад Kyiv): ");
+        String endLocation = scanner.nextLine();
+        System.out.print("*Необов'язково - Введіть бажану дату (або дату і час) рейсу (формат 31.07.2023): ");
 
-        Logger.systemMessage(CYAN_BOLD + "Введіть місце призначення: " + RESET);
-        String destination = scanner.nextLine();
-        Logger.correctInput(destination);
-
-        Logger.systemMessage(CYAN_BOLD + "Введіть дату (у форматі рік-місяць-день, наприклад, 2023-08-04): " + RESET);
-        String dateInput = scanner.nextLine();
-        Logger.correctInput(dateInput);
-
-        LocalDate date = null;
+        LocalDateTime departureDate = null;
 
         try {
-            date = LocalDate.parse(dateInput);
+            departureDate = flightsController.parseDate(scanner.nextLine());
         } catch (DateTimeParseException e) {
-
-            Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Неправильний формат дати. " + RESET);
-            return;
+            System.out.println("Неправильний формат дати, продовжую без початкової дати.");
         }
 
-        Logger.systemMessage(CYAN_BOLD + "Введіть кількість осіб: " + RESET);
-        if (!scanner.hasNextInt()) {
-            Logger.notCorrectInput(RED_BOLD_BRIGHT + " Помилка: Ви ввели не число, будь ласка, введіть число. " + RESET);
+        System.out.print("*Необов'язково - Введіть бажану дату (або дату і час) рейсу (формат 31.07.2023): ");
 
-            scanner.nextLine();
-            return;
+        LocalDateTime arrivalDate = null;
+        try {
+            String input = scanner.nextLine();
+            if (!input.isEmpty()) {
+                arrivalDate = flightsController.parseDate(input);
+            }
+        } catch (DateTimeParseException e) {
+            System.out.println("Неправильний формат дати, продовжую без кінцевої дати.");
         }
-        int numPassengers = scanner.nextInt();
 
-        Logger.correctInput(Integer.toString(numPassengers));
 
-        scanner.nextLine();
+        int ticketCount = 0;
 
-        //TODO: Виклик методу контролера (пошук бронювання рейсу)
+        while (true) {
+            System.out.print("Кількість квитків: ");
+            try {
+                ticketCount = scanner.nextInt();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Будь ласка, введіть коректну кількість квитків.");
+                scanner.nextLine();
+            }
+        }
+        System.out.println("Результати пошуку : ");
+        List<Flight> resultOfSearch = flightsController.displayAllRelevantFlights(startLocation, endLocation, departureDate, arrivalDate, ticketCount);
+
+        int choice = 0;
+        while (true) {
+            System.out.println("Якщо бажаєте забронювати рейс, введіть його порядковий номер. Якщо бажаєте вийти, натисніть 0.");
+            try {
+                choice = scanner.nextInt();
+                if (choice >= 1 && choice <= resultOfSearch.size()) {
+                    bookingController.bookRelevantFlight(resultOfSearch.get(choice - 1), sessionController.getSession().getUser());
+                } else if (choice == 0) {
+                    break;
+                } else {
+                    throw new InputMismatchException();
+                }
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Будь ласка, введіть коректну опцію.");
+                scanner.nextLine();
+            }
+        }
     }
 
     private void cancelBooking(Scanner scanner) {
