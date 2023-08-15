@@ -3,9 +3,7 @@ package daos.Booking;
 import daos.Session.SessionDao;
 import daos.Users.UsersDao;
 import models.Booking;
-import models.Flight;
 
-import java.io.*;
 import java.util.*;
 
 public class FileBookingDao implements BookingDao {

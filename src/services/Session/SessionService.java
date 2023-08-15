@@ -5,9 +5,8 @@ import models.Login;
 import models.Password;
 import models.Session;
 import services.Users.UsersService;
-import utils.ConsoleColors;
 
-public class SessionService implements ISessionService, ConsoleColors {
+public class SessionService implements ISessionService{
 
     private final SessionDao sessionDao;
 
@@ -22,6 +21,7 @@ public class SessionService implements ISessionService, ConsoleColors {
         return sessionDao.getSession();
     }
 
+    @Override
     public boolean login(Login login, Password password) {
         if (usersService.getUser(login, password) != null) {
             sessionDao.getSession().setUser(usersService.getUser(login, password));
@@ -30,6 +30,7 @@ public class SessionService implements ISessionService, ConsoleColors {
         return false;
     }
 
+    @Override
     public boolean registration(String name, String surname, Login login, Password password) {
 
         if (usersService.getUser(login, password) != null) {

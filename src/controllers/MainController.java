@@ -5,7 +5,6 @@ import models.Flight;
 import utils.ConsoleColors;
 import utils.Logger;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;

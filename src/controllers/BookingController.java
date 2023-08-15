@@ -2,13 +2,8 @@ package controllers;
 
 import models.Booking;
 import models.Flight;
-import models.User;
 import services.Booking.BookingService;
 import utils.Logger;
-
-import java.util.Random;
-import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static utils.ConsoleColors.*;
 

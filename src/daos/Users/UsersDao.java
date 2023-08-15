@@ -16,8 +16,6 @@ public class UsersDao implements IUsersDao {
         return users;
     }
 
-
-
     private static final String USERS_FILE_NAME = "users.ser";
 
     public UsersDao() {
