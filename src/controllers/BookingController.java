@@ -4,10 +4,13 @@ import models.Booking;
 import models.Flight;
 import models.User;
 import services.Booking.BookingService;
+import utils.Logger;
 
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static utils.ConsoleColors.*;
 
 public class BookingController {
     BookingService bookingService;
@@ -20,13 +23,13 @@ public class BookingController {
 
         bookingService.getAllPassengerBooks(passenger).stream()
                 .map(booking -> atomicInteger.getAndIncrement() + " )" + booking)
-                .forEach(System.out::println);
+                .forEach(b->Logger.systemMessage(GREEN_BRIGHT+ b + RESET));
     }
     public void bookRelevantFlight(Flight flight, User passengerProfile){
         int ID = bookingService.getAll().size() + 1;
         String seat = String.valueOf(flight.getTicketCount() - 1);
         Booking booking = new Booking(ID, flight, passengerProfile, seat);
         bookingService.create(booking);
-        System.out.println("Ви успішно забронювали рейс. Інформація про бронювання: " + booking);
+        Logger.systemMessage(GREEN_BOLD + "Ви успішно забронювали рейс. Інформація про бронювання: " + booking + RESET);
     }
 }
