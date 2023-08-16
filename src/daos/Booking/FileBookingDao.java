@@ -3,14 +3,11 @@ package daos.Booking;
 import daos.Session.SessionDao;
 import daos.Users.UsersDao;
 import models.Booking;
-import models.Flight;
 import utils.Logger;
 
-import java.io.*;
 import java.util.*;
 
-import static utils.ConsoleColors.RED_BRIGHT;
-import static utils.ConsoleColors.RESET;
+import static utils.ConsoleColors.*;
 
 public class FileBookingDao implements BookingDao {
 
@@ -35,7 +32,7 @@ public class FileBookingDao implements BookingDao {
         if (book.isPresent()) {
             return (Booking) book.get();
         } else {
-            Logger.notCorrectInput(RED_BRIGHT+"Бронювання за таким ID не існує !"+RESET);
+            Logger.notCorrectInput(RED_BOLD_BRIGHT+"Бронювання за таким ID не існує !"+RESET);
             return null;
         }
     }

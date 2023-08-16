@@ -101,6 +101,14 @@ public class MainController implements ConsoleColors {
 
     private void displayMenu() {
         Logger.displayMenuLog();
+
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
         System.out.println(BLUE + """
                                             Головне меню
                                ______________________________________
@@ -117,6 +125,8 @@ public class MainController implements ConsoleColors {
     }
 
     private void displayAuthenticationMenu() {
+        Logger.displayMenuLog();
+
         System.out.println(BLUE + """
                      Оберіть дію:
                               1. Реєстрація
@@ -192,6 +202,12 @@ public class MainController implements ConsoleColors {
             resultOfSearch.forEach(f->Logger.systemMessage(GREEN_BOLD+f+RESET));
         }
 
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         int choice = 0;
         while (true) {
             System.out.println("Якщо бажаєте забронювати рейс, введіть його порядковий номер. Якщо бажаєте вийти, натисніть 0.");
@@ -210,6 +226,11 @@ public class MainController implements ConsoleColors {
                 Logger.notCorrectInput(RED_BOLD_BRIGHT+"Будь ласка, введіть коректну опцію."+RESET);
                 scanner.nextLine();
             }
+        }
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

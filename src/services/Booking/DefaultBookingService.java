@@ -4,7 +4,6 @@ import daos.Booking.BookingDao;
 import models.Booking;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class DefaultBookingService implements BookingService{
     private final BookingDao bookingDao;

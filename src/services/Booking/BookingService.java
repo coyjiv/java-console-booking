@@ -2,7 +2,6 @@ package services.Booking;
 
 import models.Booking;
 
-import java.util.Collection;
 import java.util.Set;
 
 public interface BookingService {
